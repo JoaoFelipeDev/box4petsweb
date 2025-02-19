@@ -30,6 +30,7 @@ class Doencas extends StatefulWidget {
 }
 
 class _DoencasState extends State<Doencas> {
+  bool isLoading = false;
   late final DoencasBloc _doencasBloc;
   int indexPage = 0;
   @override
@@ -43,7 +44,10 @@ class _DoencasState extends State<Doencas> {
     if(widget.tipoDeBusca == 'categoria'){
       _doencasBloc.add(GetDoencasByCategoryEvent(type: widget.selectedAnimal, categories: widget.filtroCategoria, page: page));
     }else if(widget.tipoDeBusca == 'raça'){
-      _doencasBloc.add(GetDoencasByRacasEvent(racas: widget.filtroRacas, type: widget.selectedAnimal, page: page));
+      setState(() {
+        isLoading = true;
+      });
+      _doencasBloc.add(GetRacas(widget.selectedAnimal, page, widget.filtroRacas));
     }else{
       _doencasBloc.add(GetDoencasEvent(widget.selectedAnimal));
     }
@@ -56,6 +60,7 @@ class _DoencasState extends State<Doencas> {
       listener: (context, state) {
         if(state is DoencasLoaded){
           setState(() {
+            isLoading = false;
             widget.doencas = state.doencas;
           });
         }
@@ -107,7 +112,8 @@ class _DoencasState extends State<Doencas> {
                             }),
                     ),
                   ),
-                  Expanded(
+                  isLoading ? const Text('Aguarde...') : Container(),
+                 isLoading ? const Center(child:  CircularProgressIndicator(),) : Expanded(
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
@@ -332,7 +338,8 @@ class _DoencasState extends State<Doencas> {
                             }),
                     ),
                   ),
-                  Expanded(
+                  isLoading ? const Text('Aguarde...') : Container(),
+                 isLoading ? const Center(child:  CircularProgressIndicator(),) : Expanded(
                     child: SingleChildScrollView(
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
