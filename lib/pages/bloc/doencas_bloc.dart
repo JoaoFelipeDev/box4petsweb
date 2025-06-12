@@ -84,16 +84,16 @@ class DoencasBloc extends Bloc<DoencasEvent, DoencasState> {
           racasMap[field.fieldName] = field.value;
         }
          
-        var marcador = racasMap['Lista de Doenças'];
-  if (marcador is List) {
-    print('marcador: $marcador');
-    // Se for uma lista, adicione cada item da lista à lista de doenças
-    doencasRacas.addAll(marcador.map((e) => e.toString()));
-  } else if (marcador is String) {
-    // Se for uma string, adicione diretamente à lista de doenças
-    doencasRacas.add(marcador);
-  }
-      }
+                var marcador = racasMap['Lista de Doenças'];
+          if (marcador is List) {
+            print('marcador: $marcador');
+            // Se for uma lista, adicione cada item da lista à lista de doenças
+            doencasRacas.addAll(marcador.map((e) => e.toString()));
+          } else if (marcador is String) {
+            // Se for uma string, adicione diretamente à lista de doenças
+            doencasRacas.add(marcador);
+          }
+}
       
     for (var element in doencasRacas) {
       print('doencas: $element');
@@ -101,7 +101,8 @@ class DoencasBloc extends Bloc<DoencasEvent, DoencasState> {
       for (var field in response.fields) {
         doencasMap[field.fieldName] = field.value;
       }
-      doencasMaps.add(doencasMap);
+    doencasMaps.add(doencasMap);
+    doencasMap = {};
     }
     print('doencasMaps: ${doencasMaps.length}');
     List<DoencaModel> allDoencas = doencasMaps
